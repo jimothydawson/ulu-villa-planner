@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bali Villa Investment Configurator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #000;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Journey Container */
+        .journey-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            opacity: 1;
+            transition: opacity 0.3s ease;
+        }
+
+        .journey-container.hidden {
+            display: none;
+        }
+
+        .journey-container.fading {
+            opacity: 0;
+        }
+
+        /* Journey Steps */
+        .journey-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .journey-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 300;
+            letter-spacing: -1px;
+        }
+
+        .journey-header p {
+            font-size: 1.1rem;
+            opacity: 0.8;
+        }
+
+        .step-indicator {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+
+        .step-dot {
+            width: 10px;
+            height: 10px;
+            background: #333;
+            transition: background 0.3s;
+        }
+
+        .step-dot.active {
+            background: #fff;
+        }
+
+        /* Style Options */
+        .style-options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .style-option {
+            background: #111;
+            border: 1px solid #333;
+            padding: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+        }
+
+        .style-option:hover {
+            background: #1a1a1a;
+            border-color: #fff;
+            transform: translateX(5px);
+        }
+
+        .style-option h3 {
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+            font-weight: 400;
+        }
+
+        .style-option p {
+            opacity: 0.7;
+            font-size: 0.95rem;
+        }
+
+        /* Storey Options */
+        .storey-options {
+            display: flex;
+            gap: 20px;
+            width: 100%;
+            max-width: 900px;
+            justify-content: center;
+        }
+
+        .storey-column {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .storey-option {
+            background: #111;
+            border: 1px solid #333;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            height: 200px;
+        }
+
+        .storey-option:hover {
+            border-color: #fff;
+            transform: translateY(-5px);
+        }
+
+        .storey-banner {
+            background: #fff;
+            color: #000;
+            padding: 12px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .storey-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .storey-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+            font-weight: 300;
+        }
+
+        .storey-content p {
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+
+        /* Main Container */
+        .main-container {
+            display: none;
+            min-height: 100vh;
+            background: #000;
+        }
+
+        .main-container.active {
+            display: flex;
+        }
+
+        /* Configuration Panel */
+        .config-panel {
+            background: #111;
+            padding: 30px;
+            overflow-y: auto;
+            border-left: 1px solid #333;
+        }
+
+        .config-header {
+            margin-bottom: 30px;
+        }
+
+        .config-header h2 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .config-group {
+            margin-bottom: 30px;
+        }
+
+        .config-group label {
+            display: block;
+            margin-bottom: 12px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.8;
+        }
+
+        .radio-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .radio-option {
+            position: relative;
+        }
+
+        .radio-option input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+        }
+
+        .radio-option label {
+            display: block;
+            padding: 12px 20px;
+            background: #000;
+            border: 1px solid #333;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-transform: none;
+            letter-spacing: 0;
+            opacity: 1;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .radio-option input[type="radio"]:checked + label {
+            background: #fff;
+            color: #000;
+            border-color: #fff;
+        }
+
+        .radio-option label:hover {
+            border-color: #666;
+        }
+
+        /* Image Panel */
+        .image-panel {
+            position: relative;
+            background: #000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 5px;
+            min-height: 400px;
+        }
+
+        .villa-image {
+            max-width: 100%;
+            max-height: 70vh;
+            object-fit: contain;
+            transition: opacity 0.4s ease;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+        }
+
+        .villa-image.loading {
+            opacity: 0.3;
+        }
+
+        .villa-image-next {
+            z-index: 2;
+        }
+
+        /* Image alignment fixes for balinese variants */
+        .villa-image[src*="balinese-1s"] {
+            transform: translate(-50%, -50%) translateX(1px);
+        }
+
+        .villa-image[src*="balinese-2s"] {
+            transform: translate(-50%, -50%) translateX(-1px);
+        }
+
+        .image-placeholder {
+            width: 100%;
+            max-width: 600px;
+            height: 400px;
+            background: #111;
+            border: 1px solid #333;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .image-placeholder h3 {
+            margin-bottom: 20px;
+            font-weight: 300;
+        }
+
+        .image-filename {
+            margin-top: 15px;
+            font-size: 0.85rem;
+            opacity: 0.5;
+            font-family: monospace;
+        }
+
+        /* Summary Section */
+        .summary-section {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid #333;
+        }
+
+        .summary-section h3 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            font-weight: 300;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #222;
+        }
+
+        .summary-item:last-child {
+            border-bottom: none;
+        }
+
+        .summary-label {
+            opacity: 0.8;
+        }
+
+        .summary-value {
+            font-weight: 500;
+        }
+
+        .summary-highlight {
+            background: #fff;
+            color: #000;
+            padding: 15px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .summary-highlight .roi-value {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .summary-highlight .roi-label {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Mobile Drawer */
+        .mobile-toggle {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #fff;
+            color: #000;
+            padding: 15px 25px;
+            border: none;
+            font-size: 1rem;
+            cursor: pointer;
+            z-index: 1000;
+            font-weight: 500;
+        }
+
+        /* Desktop Layout */
+        @media (min-width: 768px) {
+            .main-container {
+                flex-direction: row;
+            }
+
+            .image-panel {
+                flex: 1;
+            }
+
+            .config-panel {
+                width: 450px;
+                flex-shrink: 0;
+            }
+
+            .journey-header h1 {
+                font-size: 3rem;
+            }
+
+            .storey-option {
+                height: 250px;
+            }
+        }
+
+        /* Mobile Layout */
+        @media (max-width: 767px) {
+            .main-container {
+                flex-direction: column;
+            }
+
+            .image-panel {
+                min-height: 50vh;
+                position: relative;
+            }
+
+            .config-panel {
+                position: static;
+                transform: none;
+                height: auto;
+                border-left: none;
+                border-top: 1px solid #333;
+                background: #111;
+                backdrop-filter: none;
+            }
+
+            .mobile-toggle {
+                display: none;
+            }
+
+            .journey-header h1 {
+                font-size: 2rem;
+            }
+
+            .storey-options {
+                flex-direction: column;
+                max-width: 100%;
+            }
+
+            .storey-option {
+                height: 150px;
+            }
+
+            .villa-image {
+                width: 100%;
+                max-width: 100%;
+                height: auto;
+                object-fit: cover;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+
+            .radio-group {
+                display: flex;
+                flex-wrap: nowrap;
+                gap: 5px;
+                overflow-x: auto;
+            }
+
+            .radio-option label {
+                padding: 8px 12px;
+                min-width: auto;
+                font-size: 0.85rem;
+                white-space: nowrap;
+            }
+        }
+
+        /* Loading State */
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid #333;
+            border-top-color: #fff;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Transitions */
+        .fade-in {
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Journey Step 1: Style Selection -->
+    <div class="journey-container" id="step1">
+        <div class="journey-header">
+            <h1>Choose Your Villa Style</h1>
+            <p>Select the architectural design that matches your vision</p>
+        </div>
+        <div class="step-indicator">
+            <div class="step-dot active"></div>
+            <div class="step-dot"></div>
+            <div class="step-dot"></div>
+        </div>
+        <div class="style-options">
+            <div class="style-option" data-style="modern">
+                <h3>Modern</h3>
+                <p>Clean lines, timeless appeal</p>
+            </div>
+            <div class="style-option" data-style="balinese">
+                <h3>Balinese</h3>
+                <p>Authentic tropical luxury</p>
+            </div>
+            <div class="style-option" data-style="zen">
+                <h3>Zen</h3>
+                <p>Serene minimalist retreat</p>
+            </div>
+            <div class="style-option" data-style="oasis">
+                <h3>Oasis</h3>
+                <p>Opulent sanctuary design</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Journey Step 2: Storey Selection -->
+    <div class="journey-container hidden" id="step2">
+        <div class="journey-header">
+            <h1>Select Villa Height</h1>
+            <p>Choose the perfect balance of space and investment</p>
+        </div>
+        <div class="step-indicator">
+            <div class="step-dot"></div>
+            <div class="step-dot active"></div>
+            <div class="step-dot"></div>
+        </div>
+        <div class="storey-options">
+            <div class="storey-column">
+                <div class="storey-option" data-storeys="1">
+                    <div class="storey-banner">Most Affordable</div>
+                    <div class="storey-content">
+                        <h3>1 Storey</h3>
+                        <p>Single level villa</p>
+                    </div>
+                </div>
+            </div>
+            <div class="storey-column">
+                <div class="storey-option" data-storeys="1.5">
+                    <div class="storey-banner">Best Value</div>
+                    <div class="storey-content">
+                        <h3>1.5 Storeys</h3>
+                        <p>With mezzanine</p>
+                    </div>
+                </div>
+            </div>
+            <div class="storey-column">
+                <div class="storey-option" data-storeys="2">
+                    <div class="storey-banner">Most Spacious</div>
+                    <div class="storey-content">
+                        <h3>2 Storeys</h3>
+                        <p>Maximum space</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Configurator -->
+    <div class="main-container" id="configurator">
+        <div class="image-panel">
+            <img src="" alt="Villa Preview" class="villa-image" id="villaImage" style="display: none;">
+            <img src="" alt="Villa Preview" class="villa-image villa-image-next" id="villaImageNext" style="display: none; opacity: 0;">
+            <div class="image-placeholder" id="imagePlaceholder">
+                <div class="loading-spinner"></div>
+                <h3>Loading villa preview...</h3>
+            </div>
+        </div>
+
+        <div class="config-panel" id="configPanel">
+            <!-- <div class="config-header">
+                <h2>Villa Configuration</h2>
+                <p>Customize your investment property</p>
+            </div> -->
+
+            <div class="config-group">
+                <label>Storeys</label>
+                <div class="radio-group">
+                    <div class="radio-option">
+                        <input type="radio" id="storey1" name="storeys" value="1">
+                        <label for="storey1">1 Storey</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="storey15" name="storeys" value="1.5">
+                        <label for="storey15">1.5 Storeys</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="storey2" name="storeys" value="2">
+                        <label for="storey2">2 Storeys</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="config-group">
+                <label>Style</label>
+                <div class="radio-group">
+                    <div class="radio-option">
+                        <input type="radio" id="styleModern" name="style" value="modern">
+                        <label for="styleModern">Modern</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="styleBalinese" name="style" value="balinese">
+                        <label for="styleBalinese">Balinese</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="styleZen" name="style" value="zen">
+                        <label for="styleZen">Zen</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="styleOasis" name="style" value="oasis">
+                        <label for="styleOasis">Oasis</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="config-group" style="display: none;">
+                <label>Land Size</label>
+                <div class="radio-group">
+                    <div class="radio-option">
+                        <input type="radio" id="land100" name="land" value="100" checked>
+                        <label for="land100">100m²</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="land200" name="land" value="200">
+                        <label for="land200">200m²</label>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="config-group">
+                <label>Bedrooms</label>
+                <div class="radio-group">
+                    <div class="radio-option">
+                        <input type="radio" id="bed1" name="bedrooms" value="1" checked>
+                        <label for="bed1">1 Bedroom</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="bed2" name="bedrooms" value="2">
+                        <label for="bed2">2 Bedrooms</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="summary-section">
+                <h3>Investment Summary</h3>
+                
+                <div class="summary-item">
+                    <span class="summary-label">Floor Space</span>
+                    <span class="summary-value" id="floorSpace">-</span>
+                </div>
+                
+                <div class="summary-item">
+                    <span class="summary-label">Build Cost</span>
+                    <span class="summary-value" id="buildCost">-</span>
+                </div>
+                
+                <div class="summary-item">
+                    <span class="summary-label">Nightly Rate</span>
+                    <span class="summary-value" id="nightlyRate">-</span>
+                </div>
+                
+                <div class="summary-item">
+                    <span class="summary-label">Occupancy Rate</span>
+                    <span class="summary-value" id="occupancyRate">-</span>
+                </div>
+                
+                <div class="summary-item">
+                    <span class="summary-label">Annual Revenue</span>
+                    <span class="summary-value" id="annualRevenue">-</span>
+                </div>
+                
+                <div class="summary-item">
+                    <span class="summary-label">Annual Expenses (40%)</span>
+                    <span class="summary-value" id="annualExpenses">-</span>
+                </div>
+                
+                <div class="summary-item">
+                    <span class="summary-label">Annual Profit</span>
+                    <span class="summary-value" id="annualProfit">-</span>
+                </div>
+
+                <div class="summary-highlight">
+                    <div class="roi-value" id="roiValue">-</div>
+                    <div class="roi-label">Annual Return on Investment</div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <script>
+        // Configuration state
+        const config = {
+            bedrooms: 1,
+            storeys: 1.5,
+            land: 100,
+            style: 'modern'
+        };
+
+        // Image cache
+        const imageCache = new Map();
+        let currentImageLoading = false;
+
+        // Pricing data
+        const baseCosts = {
+            modern: {
+                1: { 1: 180000, 2: 200000 },
+                1.5: { 1: 230000, 2: 250000 },
+                2: { 1: 280000, 2: 300000 }
+            }
+        };
+
+        // Style premiums
+        const stylePremiums = {
+            modern: 0,
+            balinese: { 1: 20000, 1.5: 30000, 2: 40000 },
+            zen: { 1: 20000, 1.5: 30000, 2: 40000 },
+            oasis: { 1: 20000, 1.5: 30000, 2: 40000 }
+        };
+
+        // Rental rates
+        const baseRentalRates = {
+            modern: 200,
+            balinese: 220,
+            zen: 220,
+            oasis: 220
+        };
+
+        const rentalPremiums = {
+            bedrooms: { 1: 0, 2: 40 },
+            storeys: { 1: 0, 1.5: 20, 2: 60 }
+        };
+
+        const occupancyRates = {
+            1: 0.8,
+            2: 0.7
+        };
+
+        // Journey flow
+        let selectedStyle = null;
+        let selectedStoreys = null;
+
+        // Style selection
+        document.querySelectorAll('.style-option').forEach(option => {
+            option.addEventListener('click', function() {
+                selectedStyle = this.dataset.style;
+                config.style = selectedStyle;
+                
+                // Transition to step 2
+                const step1 = document.getElementById('step1');
+                step1.classList.add('fading');
+                
+                setTimeout(() => {
+                    step1.classList.add('hidden');
+                    const step2 = document.getElementById('step2');
+                    step2.classList.remove('hidden');
+                    step2.classList.add('fade-in');
+                }, 300);
+            });
+        });
+
+        // Storey selection
+        document.querySelectorAll('.storey-option').forEach(option => {
+            option.addEventListener('click', function() {
+                selectedStoreys = parseFloat(this.dataset.storeys);
+                config.storeys = selectedStoreys;
+                
+                // Transition to configurator
+                const step2 = document.getElementById('step2');
+                step2.classList.add('fading');
+                
+                setTimeout(() => {
+                    step2.classList.add('hidden');
+                    
+                    // Set pre-selected values
+                    document.querySelector(`input[name="style"][value="${selectedStyle}"]`).checked = true;
+                    document.querySelector(`input[name="storeys"][value="${selectedStoreys}"]`).checked = true;
+                    
+                    // Show configurator
+                    const configurator = document.getElementById('configurator');
+                    configurator.classList.add('active', 'fade-in');
+                    
+                    // Update everything
+                    updateConfiguration();
+                }, 300);
+            });
+        });
+
+
+
+        // Configuration changes
+        document.querySelectorAll('input[type="radio"]').forEach(radio => {
+            radio.addEventListener('change', updateConfiguration);
+        });
+
+        function updateConfiguration() {
+            // Update config object
+            config.bedrooms = parseInt(document.querySelector('input[name="bedrooms"]:checked')?.value || 1);
+            config.storeys = parseFloat(document.querySelector('input[name="storeys"]:checked')?.value || 1.5);
+            config.land = parseInt(document.querySelector('input[name="land"]:checked')?.value || 100);
+            config.style = document.querySelector('input[name="style"]:checked')?.value || 'modern';
+
+            // Update image
+            updateImage();
+            
+            // Update calculations
+            updateCalculations();
+        }
+
+        function generateImageFilename() {
+            let filename = `${config.style}-${config.storeys}s`;
+            
+            if (config.land === 200) {
+                filename += '-200m2';
+            }
+            
+            filename += '.png';
+            return filename;
+        }
+
+        function updateImage() {
+            const filename = generateImageFilename();
+            const villaImage = document.getElementById('villaImage');
+            const villaImageNext = document.getElementById('villaImageNext');
+            const placeholder = document.getElementById('imagePlaceholder');
+            
+            // Check cache first
+            if (imageCache.has(filename)) {
+                const newSrc = imageCache.get(filename);
+                
+                // If it's the same image, don't transition
+                if (villaImage.src === newSrc) {
+                    return;
+                }
+                
+                // Ensure main image is visible and placeholder is hidden
+                villaImage.style.display = 'block';
+                placeholder.style.display = 'none';
+                
+                // Prepare the next image
+                villaImageNext.src = newSrc;
+                villaImageNext.style.display = 'block';
+                villaImageNext.style.opacity = '0';
+                
+                // Start crossfade - fade in next image only
+                requestAnimationFrame(() => {
+                    villaImageNext.style.opacity = '1';
+                });
+                
+                // Complete transition after animation
+                setTimeout(() => {
+                    // Temporarily disable transition to prevent flash
+                    villaImage.style.transition = 'none';
+                    villaImage.src = newSrc;
+                    villaImage.style.opacity = '1';
+                    villaImageNext.style.opacity = '0';
+                    villaImageNext.style.display = 'none';
+                    
+                    // Re-enable transition after a frame
+                    requestAnimationFrame(() => {
+                        villaImage.style.transition = '';
+                    });
+                }, 400);
+                
+                return;
+            }
+            
+            // Show loading state
+            villaImage.classList.add('loading');
+            currentImageLoading = true;
+            
+            // Create new image to test loading
+            const testImage = new Image();
+            testImage.onload = function() {
+                imageCache.set(filename, this.src);
+                
+                // Ensure main image is visible and placeholder is hidden
+                villaImage.style.display = 'block';
+                placeholder.style.display = 'none';
+                
+                // Prepare the next image
+                villaImageNext.src = this.src;
+                villaImageNext.style.display = 'block';
+                villaImageNext.style.opacity = '0';
+                
+                // Start crossfade - fade in next image only
+                requestAnimationFrame(() => {
+                    villaImageNext.style.opacity = '1';
+                });
+                
+                // Complete transition after animation
+                setTimeout(() => {
+                    // Temporarily disable transition to prevent flash
+                    villaImage.style.transition = 'none';
+                    villaImage.src = this.src;
+                    villaImage.classList.remove('loading');
+                    villaImage.style.opacity = '1';
+                    villaImageNext.style.opacity = '0';
+                    villaImageNext.style.display = 'none';
+                    currentImageLoading = false;
+                    
+                    // Re-enable transition after a frame
+                    requestAnimationFrame(() => {
+                        villaImage.style.transition = '';
+                    });
+                }, 400);
+            };
+            
+            testImage.onerror = function() {
+                // Show placeholder with details
+                villaImage.style.display = 'none';
+                villaImageNext.style.display = 'none';
+                placeholder.style.display = 'flex';
+                placeholder.innerHTML = `
+                    <h3>Villa Preview</h3>
+                    <p>Style: ${config.style.charAt(0).toUpperCase() + config.style.slice(1)}</p>
+                    <p>Storeys: ${config.storeys}</p>
+                    <p>Land: ${config.land}m²</p>
+                    <p style="margin-top: 20px; opacity: 0.5; font-size: 0.85rem;">Image: ${filename}</p>
+                `;
+                villaImage.classList.remove('loading');
+                currentImageLoading = false;
+            };
+            
+            // Simulate image URL (in real app, this would point to actual images)
+            testImage.src = `assets/villas/${filename}`;
+        }
+
+
+
+
+
+        function preloadImage(filename) {
+            if (!imageCache.has(filename)) {
+                const img = new Image();
+                img.onload = function() {
+                    imageCache.set(filename, this.src);
+                };
+                img.src = `assets/villas/${filename}`;
+            }
+        }
+
+        function calculateBuildCost() {
+            let cost = baseCosts.modern[config.storeys][config.bedrooms];
+            
+            // Add style premium
+            if (config.style !== 'modern') {
+                cost += stylePremiums[config.style][config.storeys];
+            }
+            
+            // Add land size modifier
+            if (config.land === 200) {
+                cost *= 1.4;
+            }
+            
+            return Math.round(cost);
+        }
+
+        function calculateNightlyRate() {
+            let rate = baseRentalRates[config.style];
+            rate += rentalPremiums.bedrooms[config.bedrooms];
+            rate += rentalPremiums.storeys[config.storeys];
+            return rate;
+        }
+
+        function calculateFloorSpace() {
+            const baseSpace = 65.45;
+            const multipliers = { 1: 1, 1.5: 1.5, 2: 2 };
+            return (baseSpace * multipliers[config.storeys]).toFixed(2);
+        }
+
+        function updateCalculations() {
+            const buildCost = calculateBuildCost();
+            const nightlyRate = calculateNightlyRate();
+            const occupancyRate = occupancyRates[config.bedrooms];
+            const annualRevenue = nightlyRate * 365 * occupancyRate;
+            const annualExpenses = annualRevenue * 0.4;
+            const annualProfit = annualRevenue - annualExpenses;
+            const roi = (annualProfit / buildCost) * 100;
+            const floorSpace = calculateFloorSpace();
+
+            // Update display
+            document.getElementById('floorSpace').textContent = `${floorSpace}m²`;
+            document.getElementById('buildCost').textContent = `${buildCost.toLocaleString()}`;
+            document.getElementById('nightlyRate').textContent = `${nightlyRate}/night`;
+            document.getElementById('occupancyRate').textContent = `${(occupancyRate * 100).toFixed(0)}%`;
+            document.getElementById('annualRevenue').textContent = `${Math.round(annualRevenue).toLocaleString()}`;
+            document.getElementById('annualExpenses').textContent = `${Math.round(annualExpenses).toLocaleString()}`;
+            document.getElementById('annualProfit').textContent = `${Math.round(annualProfit).toLocaleString()}`;
+            document.getElementById('roiValue').textContent = `${roi.toFixed(1)}%`;
+        }
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', () => {
+            // Set default values
+            document.getElementById('bed1').checked = true;
+            document.getElementById('storey15').checked = true;
+            document.getElementById('land100').checked = true;
+            document.getElementById('styleModern').checked = true;
+            
+            // Hide journey steps and show configurator directly (for testing)
+            document.getElementById('step1').classList.add('hidden');
+            document.getElementById('step2').classList.add('hidden');
+            document.getElementById('configurator').classList.add('active');
+            
+            // Ensure main image is visible
+            const villaImage = document.getElementById('villaImage');
+            villaImage.style.display = 'block';
+            villaImage.style.opacity = '1';
+            
+            updateConfiguration();
+        });
+
+
+
+
+    </script>
+</body>
+</html>
+</html>
