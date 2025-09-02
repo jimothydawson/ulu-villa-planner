@@ -496,6 +496,66 @@
             letter-spacing: 1px;
         }
 
+        /* Interactive Summary Items */
+        .interactive-item {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .summary-radio-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            width: 100%;
+        }
+
+        .summary-radio-group .radio-option label {
+            padding: 10px 14px;
+            font-size: 0.85rem;
+            min-width: 60px;
+            height: 36px;
+            text-align: center;
+        }
+
+        .summary-header {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .auto-control {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .auto-control input[type="checkbox"] {
+            width: 14px;
+            height: 14px;
+            accent-color: #fff;
+        }
+
+        .auto-label {
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin: 0;
+        }
+
+        .recommended-label {
+            font-size: 0.75rem;
+            opacity: 0.6;
+            font-style: italic;
+        }
+
+        /* Disable radio buttons when auto is checked */
+        .auto-disabled .radio-option {
+            opacity: 0.4;
+            pointer-events: none;
+        }
+
         /* Mobile Drawer */
         .mobile-toggle {
             display: none;
@@ -796,6 +856,12 @@
         .light-theme .radio-option.disabled label:hover {
             border-color: #e0e0e0;
         }
+
+        .light-theme .auto-control input[type="checkbox"] {
+            accent-color: #000;
+        }
+
+
     </style>
 </head>
 <body>
@@ -851,7 +917,7 @@
                     <div class="storey-banner">Most Affordable</div>
                     <div class="storey-content">
                         <h3>1 Floor</h3>
-                        <p>1 bedroom<br><span class="price-text">From 200k AUD</span></p>
+                        <p>1 bedroom or studio<br><span class="price-text">From 185k AUD</span></p>
                     </div>
                 </div>
             </div>
@@ -860,7 +926,7 @@
                     <div class="storey-banner">Best Value</div>
                     <div class="storey-content">
                         <h3>1.5 Floors</h3>
-                        <p>1 or 2 bedrooms with mezzanine<br><span class="price-text">From 250k AUD</span></p>
+                        <p>1 or 2 bedrooms with mezzanine<br><span class="price-text">From 245k AUD</span></p>
                     </div>
                 </div>
             </div>
@@ -869,7 +935,7 @@
                     <div class="storey-banner">Most Spacious</div>
                     <div class="storey-content">
                         <h3>2 Floors</h3>
-                        <p>up to 3 bedrooms<br><span class="price-text">From 300k AUD</span></p>
+                        <p>up to 3 bedrooms<br><span class="price-text">From 285k AUD</span></p>
                     </div>
                 </div>
             </div>
@@ -992,14 +1058,78 @@
                     <span class="summary-value" id="buildCost">-</span>
                 </div>
                 
-                <div class="summary-item">
-                    <span class="summary-label">Nightly Rate</span>
-                    <span class="summary-value" id="nightlyRate">-</span>
+                <div class="summary-item interactive-item">
+                    <div class="summary-header">
+                        <span class="summary-label">Nightly Rate</span>
+                        <div class="auto-control">
+                            <input type="checkbox" id="autoNightlyRate" checked>
+                            <label for="autoNightlyRate" class="auto-label">Auto</label>
+                            <span class="recommended-label">Recommended: $<span id="recommendedNightly">250</span></span>
+                        </div>
+                    </div>
+                    <div class="radio-group summary-radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="rate200" name="nightlyRate" value="200">
+                            <label for="rate200">$200</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="rate250" name="nightlyRate" value="250">
+                            <label for="rate250">$250</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="rate300" name="nightlyRate" value="300">
+                            <label for="rate300">$300</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="rate350" name="nightlyRate" value="350">
+                            <label for="rate350">$350</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="rate400" name="nightlyRate" value="400">
+                            <label for="rate400">$400</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="rate450" name="nightlyRate" value="450">
+                            <label for="rate450">$450</label>
+                        </div>
+                    </div>
                 </div>
                 
-                <div class="summary-item">
-                    <span class="summary-label">Occupancy Rate</span>
-                    <span class="summary-value" id="occupancyRate">-</span>
+                <div class="summary-item interactive-item">
+                    <div class="summary-header">
+                        <span class="summary-label">Occupancy Rate</span>
+                        <div class="auto-control">
+                            <input type="checkbox" id="autoOccupancyRate" checked>
+                            <label for="autoOccupancyRate" class="auto-label">Auto</label>
+                            <span class="recommended-label">Recommended: <span id="recommendedOccupancy">80%</span></span>
+                        </div>
+                    </div>
+                    <div class="radio-group summary-radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="occ50" name="occupancyRate" value="0.5">
+                            <label for="occ50">50%</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="occ60" name="occupancyRate" value="0.6">
+                            <label for="occ60">60%</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="occ70" name="occupancyRate" value="0.7">
+                            <label for="occ70">70%</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="occ80" name="occupancyRate" value="0.8">
+                            <label for="occ80">80%</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="occ90" name="occupancyRate" value="0.9">
+                            <label for="occ90">90%</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="occ100" name="occupancyRate" value="1.0">
+                            <label for="occ100">100%</label>
+                        </div>
+                    </div>
                 </div>
                 
                 <div class="summary-item">
@@ -1043,9 +1173,9 @@
         // Pricing data
         const baseCosts = {
             modern: {
-                1: { 1: 180000, 2: 200000 },
-                1.5: { 1: 230000, 2: 250000 },
-                2: { 1: 280000, 2: 300000, 3: 320000 }
+                1: { 1: 185000, 2: 205000 },
+                1.5: { 1: 245000, 2: 265000 },
+                2: { 1: 285000, 2: 305000, 3: 325000 }
             }
         };
 
@@ -1057,17 +1187,24 @@
             oasis: { 1: 20000, 1.5: 30000, 2: 40000 }
         };
 
-        // Rental rates
-        const baseRentalRates = {
-            modern: 200,
-            balinese: 220,
-            zen: 220,
-            oasis: 220
+        // Rental rates - now based on floors primarily (rounded to $50 increments)
+        const baseRentalRatesByFloor = {
+            1: 250,
+            1.5: 300, 
+            2: 350
         };
 
-        const rentalPremiums = {
-            bedrooms: { 1: 0, 2: 40, 3: 80 },
-            storeys: { 1: 0, 1.5: 20, 2: 60 }
+        const styleRentalPremiums = {
+            modern: 0,
+            balinese: 50,
+            zen: 50,
+            oasis: 50
+        };
+
+        const bedroomRentalPremiums = {
+            1: 0, 
+            2: 50, 
+            3: 100
         };
 
         const occupancyRates = {
@@ -1132,6 +1269,59 @@
         document.querySelectorAll('input[type="radio"]').forEach(radio => {
             radio.addEventListener('change', updateConfiguration);
         });
+
+        // Interactive input changes
+        document.querySelectorAll('input[name="nightlyRate"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                // Uncheck auto when user manually selects
+                document.getElementById('autoNightlyRate').checked = false;
+                updateRadioGroupState();
+                updateCalculations();
+            });
+        });
+        document.querySelectorAll('input[name="occupancyRate"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                // Uncheck auto when user manually selects
+                document.getElementById('autoOccupancyRate').checked = false;
+                updateRadioGroupState();
+                updateCalculations();
+            });
+        });
+
+        // Auto checkbox changes
+        document.getElementById('autoNightlyRate').addEventListener('change', function() {
+            updateRadioGroupState();
+            if (this.checked) {
+                updateCalculations(); // This will auto-select recommended value
+            }
+        });
+        document.getElementById('autoOccupancyRate').addEventListener('change', function() {
+            updateRadioGroupState();
+            if (this.checked) {
+                updateCalculations(); // This will auto-select recommended value
+            }
+        });
+
+        function updateRadioGroupState() {
+            // Update visual state of radio groups based on auto checkboxes
+            const nightlyRateGroup = document.querySelector('.summary-item:has(input[name="nightlyRate"])');
+            const occupancyRateGroup = document.querySelector('.summary-item:has(input[name="occupancyRate"])');
+            
+            const autoNightly = document.getElementById('autoNightlyRate').checked;
+            const autoOccupancy = document.getElementById('autoOccupancyRate').checked;
+            
+            if (autoNightly) {
+                nightlyRateGroup?.classList.add('auto-disabled');
+            } else {
+                nightlyRateGroup?.classList.remove('auto-disabled');
+            }
+            
+            if (autoOccupancy) {
+                occupancyRateGroup?.classList.add('auto-disabled');
+            } else {
+                occupancyRateGroup?.classList.remove('auto-disabled');
+            }
+        }
 
         function updateConfiguration() {
             // Update config object
@@ -1360,33 +1550,62 @@
         }
 
         function calculateNightlyRate() {
-            let rate = baseRentalRates[config.style];
-            rate += rentalPremiums.bedrooms[config.bedrooms];
-            rate += rentalPremiums.storeys[config.storeys];
+            let rate = baseRentalRatesByFloor[config.storeys];
+            rate += styleRentalPremiums[config.style];
+            rate += bedroomRentalPremiums[config.bedrooms];
             return rate;
         }
 
         function calculateFloorSpace() {
             const baseSpace = 65.45;
             const multipliers = { 1: 1, 1.5: 1.5, 2: 2 };
-            return (baseSpace * multipliers[config.storeys]).toFixed(2);
+            return Math.round(baseSpace * multipliers[config.storeys]);
         }
 
         function updateCalculations() {
             const buildCost = calculateBuildCost();
-            const nightlyRate = calculateNightlyRate();
-            const occupancyRate = occupancyRates[config.bedrooms];
-            const annualRevenue = nightlyRate * 365 * occupancyRate;
+            const recommendedNightlyRate = calculateNightlyRate();
+            const recommendedOccupancyRate = occupancyRates[config.bedrooms];
+            
+            // Get user inputs or use recommended values
+            const selectedNightlyRate = document.querySelector('input[name="nightlyRate"]:checked');
+            const selectedOccupancyRate = document.querySelector('input[name="occupancyRate"]:checked');
+            
+            const userNightlyRate = selectedNightlyRate ? parseInt(selectedNightlyRate.value) : recommendedNightlyRate;
+            const userOccupancyRate = selectedOccupancyRate ? parseFloat(selectedOccupancyRate.value) : recommendedOccupancyRate;
+            
+            // Update recommended values display
+            document.getElementById('recommendedNightly').textContent = recommendedNightlyRate;
+            document.getElementById('recommendedOccupancy').textContent = `${(recommendedOccupancyRate * 100).toFixed(0)}%`;
+            
+            // Auto-select recommended values only if auto checkbox is checked
+            const autoNightlyRate = document.getElementById('autoNightlyRate').checked;
+            const autoOccupancyRate = document.getElementById('autoOccupancyRate').checked;
+            
+            if (autoNightlyRate) {
+                const recommendedNightlyRadio = document.querySelector(`input[name="nightlyRate"][value="${recommendedNightlyRate}"]`);
+                if (recommendedNightlyRadio) {
+                    recommendedNightlyRadio.checked = true;
+                }
+            }
+            
+            if (autoOccupancyRate) {
+                const recommendedOccupancyRadio = document.querySelector(`input[name="occupancyRate"][value="${recommendedOccupancyRate}"]`);
+                if (recommendedOccupancyRadio) {
+                    recommendedOccupancyRadio.checked = true;
+                }
+            }
+            
+            // Calculate using user inputs
+            const annualRevenue = userNightlyRate * 365 * userOccupancyRate;
             const annualExpenses = annualRevenue * 0.4;
             const annualProfit = annualRevenue - annualExpenses;
             const roi = (annualProfit / buildCost) * 100;
             const floorSpace = calculateFloorSpace();
 
             // Update display
-            document.getElementById('floorSpace').textContent = `${floorSpace}m²`;
+            document.getElementById('floorSpace').textContent = `~${floorSpace}m²`;
             document.getElementById('buildCost').textContent = `${buildCost.toLocaleString()}`;
-            document.getElementById('nightlyRate').textContent = `${nightlyRate}/night`;
-            document.getElementById('occupancyRate').textContent = `${(occupancyRate * 100).toFixed(0)}%`;
             document.getElementById('annualRevenue').textContent = `${Math.round(annualRevenue).toLocaleString()}`;
             document.getElementById('annualExpenses').textContent = `${Math.round(annualExpenses).toLocaleString()}`;
             document.getElementById('annualProfit').textContent = `${Math.round(annualProfit).toLocaleString()}`;
@@ -1461,6 +1680,9 @@
             
             // Initialize view toggle - temporarily disabled
             // initializeViewToggle();
+            
+            // Initialize radio group states
+            updateRadioGroupState();
             
             // Start with journey steps (style and storey selection)
             document.getElementById('step1').classList.remove('hidden');
