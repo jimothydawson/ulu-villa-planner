@@ -166,6 +166,7 @@
             justify-content: center;
             align-items: center;
             padding: 20px;
+            text-align: center;
         }
 
         .storey-content h3 {
@@ -177,6 +178,13 @@
         .storey-content p {
             opacity: 0.7;
             font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .price-text {
+            font-size: 1.1rem;
+            font-weight: 500;
+            opacity: 0.9;
         }
 
         /* Main Container */
@@ -571,7 +579,7 @@
             }
 
             .storey-option {
-                height: 150px;
+                height: 180px;
             }
 
             .villa-image {
@@ -829,8 +837,8 @@
         <button class="theme-toggle journey-theme-toggle" id="journeyThemeToggle2">◐</button>
         <div class="journey-header">
             <h1>BALI VILLA PLANNER<br>BY CASA BOMBORA</h1>
-            <h2>Select Villa Height</h2>
-            <p>Choose the perfect balance of space and investment</p>
+            <h2>Choose Your Villa Size</h2>
+            <!-- <p>Choose the perfect balance of space and investment</p> -->
         </div>
         <div class="step-indicator">
             <div class="step-dot"></div>
@@ -842,8 +850,8 @@
                 <div class="storey-option" data-storeys="1">
                     <div class="storey-banner">Most Affordable</div>
                     <div class="storey-content">
-                        <h3>1 Storey</h3>
-                        <p>Single level villa</p>
+                        <h3>1 Floor</h3>
+                        <p>1 bedroom<br><span class="price-text">From 200k AUD</span></p>
                     </div>
                 </div>
             </div>
@@ -851,8 +859,8 @@
                 <div class="storey-option" data-storeys="1.5">
                     <div class="storey-banner">Best Value</div>
                     <div class="storey-content">
-                        <h3>1.5 Storeys</h3>
-                        <p>With mezzanine</p>
+                        <h3>1.5 Floors</h3>
+                        <p>1 or 2 bedrooms with mezzanine<br><span class="price-text">From 250k AUD</span></p>
                     </div>
                 </div>
             </div>
@@ -860,8 +868,8 @@
                 <div class="storey-option" data-storeys="2">
                     <div class="storey-banner">Most Spacious</div>
                     <div class="storey-content">
-                        <h3>2 Storeys</h3>
-                        <p>Maximum space</p>
+                        <h3>2 Floors</h3>
+                        <p>up to 3 bedrooms<br><span class="price-text">From 300k AUD</span></p>
                     </div>
                 </div>
             </div>
@@ -885,7 +893,7 @@
                 <div class="header-row">
                     <div class="current-selections">
                         <span id="currentStyle">Modern</span>
-                        <span id="currentStoreys">1.5 storey</span>
+                        <span id="currentStoreys">1.5 floors</span>
                         <span id="currentBedrooms">1 bed</span>
                     </div>
                     <div class="header-buttons">
@@ -1191,10 +1199,10 @@
             const styleDisplay = config.style.charAt(0).toUpperCase() + config.style.slice(1);
             document.getElementById('currentStyle').textContent = styleDisplay;
 
-            // Update storeys display
-            const storeyDisplay = config.storeys === 1 ? '1 floor' : 
+            // Update floors display
+            const floorDisplay = config.storeys === 1 ? '1 floor' : 
                                  config.storeys === 1.5 ? '1.5 floors' : '2 floors';
-            document.getElementById('currentStoreys').textContent = storeyDisplay;
+            document.getElementById('currentStoreys').textContent = floorDisplay;
 
             // Update bedrooms display
             const bedroomDisplay = config.bedrooms === 1 ? '1 bed' : 
