@@ -46,6 +46,15 @@
         }
 
         .journey-header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            line-height: 1.2;
+            opacity: 0.9;
+        }
+
+        .journey-header h2 {
             font-size: 2.5rem;
             margin-bottom: 10px;
             font-weight: 300;
@@ -195,8 +204,45 @@
 
         .config-header h2 {
             font-size: 2rem;
-            margin-bottom: 10px;
+            margin-bottom: 20px;
             font-weight: 300;
+        }
+
+        .header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .current-selections {
+            display: flex;
+            gap: 20px;
+            font-size: 0.95rem;
+            opacity: 0.8;
+        }
+
+        .current-selections span {
+            font-weight: 500;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: 1px solid #333;
+            color: #fff;
+            font-size: 1.2rem;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .theme-toggle:hover {
+            border-color: #fff;
+            transform: scale(1.1);
         }
 
         .config-group {
@@ -402,6 +448,10 @@
             }
 
             .journey-header h1 {
+                font-size: 2.2rem;
+            }
+
+            .journey-header h2 {
                 font-size: 3rem;
             }
 
@@ -436,6 +486,10 @@
             }
 
             .journey-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .journey-header h2 {
                 font-size: 2rem;
             }
 
@@ -497,13 +551,135 @@
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
+        /* Light Theme */
+        body.light-theme {
+            background: #fff;
+            color: #000;
+        }
+
+        .light-theme .journey-container {
+            background: #fff;
+            color: #000;
+        }
+
+        .light-theme .style-option {
+            background: #f8f8f8;
+            border-color: #ddd;
+            color: #000;
+        }
+
+        .light-theme .style-option:hover {
+            background: #eee;
+            border-color: #000;
+        }
+
+        .light-theme .storey-option {
+            background: #f8f8f8;
+            border-color: #ddd;
+            color: #000;
+        }
+
+        .light-theme .storey-option:hover {
+            border-color: #000;
+        }
+
+        .light-theme .storey-banner {
+            background: #000;
+            color: #fff;
+        }
+
+        .light-theme .main-container {
+            background: #fff;
+        }
+
+        .light-theme .config-panel {
+            background: #f8f8f8;
+            border-left-color: #ddd;
+        }
+
+        .light-theme .current-selections {
+            color: #000;
+        }
+
+        .light-theme .radio-option label {
+            background: #fff;
+            border-color: #ddd;
+            color: #000;
+        }
+
+        .light-theme .radio-option input[type="radio"]:checked + label {
+            background: #000;
+            color: #fff;
+            border-color: #000;
+        }
+
+        .light-theme .radio-option label:hover {
+            border-color: #999;
+        }
+
+        .light-theme .image-placeholder {
+            background: #f8f8f8;
+            border-color: #ddd;
+            color: #000;
+        }
+
+        .light-theme .loading-spinner {
+            border-color: #ddd;
+            border-top-color: #000;
+        }
+
+        .light-theme .summary-item {
+            border-bottom-color: #eee;
+        }
+
+        .light-theme .summary-highlight {
+            background: #000;
+            color: #fff;
+        }
+
+        .light-theme .theme-toggle {
+            border-color: #ddd;
+            color: #000;
+        }
+
+        .light-theme .theme-toggle:hover {
+            border-color: #000;
+        }
+
+        .light-theme .step-dot {
+            background: #ddd;
+        }
+
+        .light-theme .step-dot.active {
+            background: #000;
+        }
+
+        /* Journey Theme Toggle */
+        .journey-theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+        }
+
+        .light-theme .journey-theme-toggle {
+            border-color: #ddd;
+            color: #000;
+        }
+
+        .light-theme .journey-theme-toggle:hover {
+            border-color: #000;
+        }
     </style>
 </head>
 <body>
     <!-- Journey Step 1: Style Selection -->
     <div class="journey-container" id="step1">
+        <button class="theme-toggle journey-theme-toggle" id="journeyThemeToggle1">◐</button>
         <div class="journey-header">
-            <h1>Choose Your Villa Style</h1>
+            <h1>BALI VILLA PLANNER<br>BY CASA BOMBORA</h1>
+            <h2>Choose Your Villa Style</h2>
             <p>Select the architectural design that matches your vision</p>
         </div>
         <div class="step-indicator">
@@ -533,8 +709,10 @@
 
     <!-- Journey Step 2: Storey Selection -->
     <div class="journey-container hidden" id="step2">
+        <button class="theme-toggle journey-theme-toggle" id="journeyThemeToggle2">◐</button>
         <div class="journey-header">
-            <h1>Select Villa Height</h1>
+            <h1>BALI VILLA PLANNER<br>BY CASA BOMBORA</h1>
+            <h2>Select Villa Height</h2>
             <p>Choose the perfect balance of space and investment</p>
         </div>
         <div class="step-indicator">
@@ -585,10 +763,17 @@
         </div>
 
         <div class="config-panel" id="configPanel">
-            <!-- <div class="config-header">
-                <h2>Villa Configuration</h2>
-                <p>Customize your investment property</p>
-            </div> -->
+            <div class="config-header">
+                <!-- <h2>Villa Configuration</h2> -->
+                <div class="header-row">
+                    <div class="current-selections">
+                        <span id="currentStyle">Modern</span>
+                        <span id="currentStoreys">1.5 storey</span>
+                        <span id="currentBedrooms">1 bed</span>
+                    </div>
+                    <button class="theme-toggle" id="themeToggle">◐</button>
+                </div>
+            </div>
 
             <div class="config-group">
                 <label>Storeys</label>
@@ -820,11 +1005,29 @@
             config.land = parseInt(document.querySelector('input[name="land"]:checked')?.value || 100);
             config.style = document.querySelector('input[name="style"]:checked')?.value || 'modern';
 
+            // Update current selections display
+            updateCurrentSelections();
+
             // Update image
             updateImage();
             
             // Update calculations
             updateCalculations();
+        }
+
+        function updateCurrentSelections() {
+            // Update style display
+            const styleDisplay = config.style.charAt(0).toUpperCase() + config.style.slice(1);
+            document.getElementById('currentStyle').textContent = styleDisplay;
+
+            // Update storeys display
+            const storeyDisplay = config.storeys === 1 ? '1 storey' : 
+                                 config.storeys === 1.5 ? '1.5 storey' : '2 storey';
+            document.getElementById('currentStoreys').textContent = storeyDisplay;
+
+            // Update bedrooms display
+            const bedroomDisplay = config.bedrooms === 1 ? '1 bed' : '2 bed';
+            document.getElementById('currentBedrooms').textContent = bedroomDisplay;
         }
 
         function generateImageFilename() {
@@ -1010,6 +1213,35 @@
             document.getElementById('roiValue').textContent = `${roi.toFixed(1)}%`;
         }
 
+        // Theme switching functionality
+        function initializeThemeToggle() {
+            const body = document.body;
+            
+            // Check for saved theme preference
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'light') {
+                body.classList.add('light-theme');
+            }
+            
+            // Theme toggle function
+            function toggleTheme() {
+                body.classList.toggle('light-theme');
+                
+                // Save theme preference
+                if (body.classList.contains('light-theme')) {
+                    localStorage.setItem('theme', 'light');
+                } else {
+                    localStorage.setItem('theme', 'dark');
+                }
+            }
+            
+            // Add click handlers to all theme toggle buttons
+            const themeToggles = document.querySelectorAll('.theme-toggle');
+            themeToggles.forEach(toggle => {
+                toggle.addEventListener('click', toggleTheme);
+            });
+        }
+
         // Initialize on load
         document.addEventListener('DOMContentLoaded', () => {
             // Set default values
@@ -1018,17 +1250,16 @@
             document.getElementById('land100').checked = true;
             document.getElementById('styleModern').checked = true;
             
-            // Hide journey steps and show configurator directly (for testing)
-            document.getElementById('step1').classList.add('hidden');
+            // Initialize theme toggle
+            initializeThemeToggle();
+            
+            // Start with journey steps (style and storey selection)
+            document.getElementById('step1').classList.remove('hidden');
             document.getElementById('step2').classList.add('hidden');
-            document.getElementById('configurator').classList.add('active');
+            document.getElementById('configurator').classList.remove('active');
             
-            // Ensure main image is visible
-            const villaImage = document.getElementById('villaImage');
-            villaImage.style.display = 'block';
-            villaImage.style.opacity = '1';
-            
-            updateConfiguration();
+            // Don't load images until user makes selections
+            // updateConfiguration() will be called when they reach the configurator
         });
 
 
