@@ -226,7 +226,14 @@
             font-weight: 500;
         }
 
-        .theme-toggle {
+        .header-buttons {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .theme-toggle,
+        .view-toggle {
             background: none;
             border: 1px solid #333;
             color: #fff;
@@ -240,13 +247,54 @@
             justify-content: center;
         }
 
-        .theme-toggle:hover {
+        .theme-toggle:hover,
+        .view-toggle:hover {
             border-color: #fff;
             transform: scale(1.1);
         }
 
+        .view-toggle.active {
+            background: #fff;
+            color: #000;
+        }
+
+        /* View switching - temporarily disabled */
+        .config-selectors {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .summary-section {
+            display: block;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid #333;
+        }
+
+        /* Commented out view switching functionality
+        body.summary-view .config-selectors {
+            display: none;
+        }
+
+        body.summary-view .summary-section {
+            display: block;
+            margin-top: 0;
+            padding-top: 0;
+            border-top: none;
+        }
+        */
+
         .config-group {
-            margin-bottom: 30px;
+            margin-bottom: 25px;
+        }
+
+        .inline-label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            opacity: 0.9;
         }
 
         .config-group label {
@@ -275,7 +323,7 @@
 
         .radio-option label {
             display: block;
-            padding: 12px 20px;
+            padding: 16px 20px;
             background: #000;
             border: 1px solid #333;
             cursor: pointer;
@@ -284,7 +332,11 @@
             letter-spacing: 0;
             opacity: 1;
             min-width: 80px;
+            height: 44px;
             text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .radio-option input[type="radio"]:checked + label {
@@ -297,6 +349,22 @@
             border-color: #666;
         }
 
+        .radio-option.disabled label {
+            opacity: 0.3;
+            cursor: not-allowed;
+            background: #111;
+            border-color: #222;
+        }
+
+        .radio-option.disabled label:hover {
+            border-color: #222;
+            transform: none;
+        }
+
+        .radio-option.disabled input[type="radio"] {
+            pointer-events: none;
+        }
+
         /* Image Panel */
         .image-panel {
             position: relative;
@@ -307,6 +375,7 @@
             align-items: center;
             padding: 5px;
             min-height: 400px;
+            overflow: hidden;
         }
 
         .villa-image {
@@ -317,7 +386,9 @@
             position: absolute;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%) scale(1.15);
+            transform-origin: center 40%;
+            clip-path: inset(0 0 10% 0);
             z-index: 1;
         }
 
@@ -329,14 +400,15 @@
             z-index: 2;
         }
 
-        /* Image alignment fixes for balinese variants */
+        /* Image alignment fixes for balinese variants - compatible with scaling */
         .villa-image[src*="balinese-1s"] {
-            transform: translate(-50%, -50%) translateX(1px);
+            transform: translate(-50%, -50%) scale(1.15) translateX(1px);
         }
 
         .villa-image[src*="balinese-2s"] {
-            transform: translate(-50%, -50%) translateX(-1px);
+            transform: translate(-50%, -50%) scale(1.15) translateX(-1px);
         }
+
 
         .image-placeholder {
             width: 100%;
@@ -506,25 +578,45 @@
                 width: 100%;
                 max-width: 100%;
                 height: auto;
-                object-fit: cover;
+                object-fit: contain;
                 position: absolute;
                 top: 50%;
                 left: 50%;
-                transform: translate(-50%, -50%);
+                transform: translate(-50%, -50%) scale(1.15);
+                transform-origin: center 40%;
+                clip-path: inset(0 0 10% 0);
             }
 
             .radio-group {
                 display: flex;
                 flex-wrap: nowrap;
+                justify-content: space-between;
                 gap: 5px;
                 overflow-x: auto;
             }
 
             .radio-option label {
-                padding: 8px 12px;
+                padding: 12px 16px;
                 min-width: auto;
+                height: 44px;
                 font-size: 0.85rem;
                 white-space: nowrap;
+            }
+
+            /* Allow floors and bedrooms to sit in one row on mobile */
+            .config-selectors {
+                gap: 15px;
+            }
+
+            .config-group:nth-child(2),
+            .config-group:nth-child(3) {
+                flex: 0;
+            }
+
+            .floors-bedrooms-row {
+                display: flex;
+                justify-content: space-between;
+                gap: 15px;
             }
         }
 
@@ -671,6 +763,31 @@
         .light-theme .journey-theme-toggle:hover {
             border-color: #000;
         }
+
+        .light-theme .view-toggle {
+            border-color: #ddd;
+            color: #000;
+        }
+
+        .light-theme .view-toggle:hover {
+            border-color: #000;
+        }
+
+        .light-theme .view-toggle.active {
+            background: #000;
+            color: #fff;
+        }
+
+        .light-theme .radio-option.disabled label {
+            opacity: 0.3;
+            background: #f0f0f0;
+            border-color: #e0e0e0;
+            color: #ccc;
+        }
+
+        .light-theme .radio-option.disabled label:hover {
+            border-color: #e0e0e0;
+        }
     </style>
 </head>
 <body>
@@ -771,76 +888,85 @@
                         <span id="currentStoreys">1.5 storey</span>
                         <span id="currentBedrooms">1 bed</span>
                     </div>
-                    <button class="theme-toggle" id="themeToggle">◐</button>
-                </div>
-            </div>
-
-            <div class="config-group">
-                <label>Storeys</label>
-                <div class="radio-group">
-                    <div class="radio-option">
-                        <input type="radio" id="storey1" name="storeys" value="1">
-                        <label for="storey1">1 Storey</label>
-                    </div>
-                    <div class="radio-option">
-                        <input type="radio" id="storey15" name="storeys" value="1.5">
-                        <label for="storey15">1.5 Storeys</label>
-                    </div>
-                    <div class="radio-option">
-                        <input type="radio" id="storey2" name="storeys" value="2">
-                        <label for="storey2">2 Storeys</label>
+                    <div class="header-buttons">
+                        <!-- <button class="view-toggle" id="viewToggle">$</button> -->
+                        <button class="theme-toggle" id="themeToggle">◐</button>
                     </div>
                 </div>
             </div>
 
-            <div class="config-group">
-                <label>Style</label>
-                <div class="radio-group">
-                    <div class="radio-option">
-                        <input type="radio" id="styleModern" name="style" value="modern">
-                        <label for="styleModern">Modern</label>
-                    </div>
-                    <div class="radio-option">
-                        <input type="radio" id="styleBalinese" name="style" value="balinese">
-                        <label for="styleBalinese">Balinese</label>
-                    </div>
-                    <div class="radio-option">
-                        <input type="radio" id="styleZen" name="style" value="zen">
-                        <label for="styleZen">Zen</label>
-                    </div>
-                    <div class="radio-option">
-                        <input type="radio" id="styleOasis" name="style" value="oasis">
-                        <label for="styleOasis">Oasis</label>
-                    </div>
-                </div>
-            </div>
-
-            <div class="config-group" style="display: none;">
-                <label>Land Size</label>
-                <div class="radio-group">
-                    <div class="radio-option">
-                        <input type="radio" id="land100" name="land" value="100" checked>
-                        <label for="land100">100m²</label>
-                    </div>
-                    <div class="radio-option">
-                        <input type="radio" id="land200" name="land" value="200">
-                        <label for="land200">200m²</label>
+            <div class="config-selectors">
+                <div class="config-group">
+                    <span class="inline-label">Style:</span>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="styleModern" name="style" value="modern">
+                            <label for="styleModern">Modern</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="styleBalinese" name="style" value="balinese">
+                            <label for="styleBalinese">Balinese</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="styleZen" name="style" value="zen">
+                            <label for="styleZen">Zen</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="styleOasis" name="style" value="oasis">
+                            <label for="styleOasis">Oasis</label>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-
-
-            <div class="config-group">
-                <label>Bedrooms</label>
-                <div class="radio-group">
-                    <div class="radio-option">
-                        <input type="radio" id="bed1" name="bedrooms" value="1" checked>
-                        <label for="bed1">1 Bedroom</label>
+                <div class="floors-bedrooms-row">
+                    <div class="config-group">
+                        <span class="inline-label">Floors:</span>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" id="storey1" name="storeys" value="1">
+                                <label for="storey1">1</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="storey15" name="storeys" value="1.5">
+                                <label for="storey15">1.5</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="storey2" name="storeys" value="2">
+                                <label for="storey2">2</label>
+                            </div>
+                        </div>
                     </div>
-                    <div class="radio-option">
-                        <input type="radio" id="bed2" name="bedrooms" value="2">
-                        <label for="bed2">2 Bedrooms</label>
+
+                    <div class="config-group">
+                        <span class="inline-label">Bedrooms:</span>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" id="bed1" name="bedrooms" value="1" checked>
+                                <label for="bed1">1</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="bed2" name="bedrooms" value="2">
+                                <label for="bed2">2</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="bed3" name="bedrooms" value="3">
+                                <label for="bed3">3</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="config-group" style="display: none;">
+                    <span class="inline-label">Land:</span>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="land100" name="land" value="100" checked>
+                            <label for="land100">100m²</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="land200" name="land" value="200">
+                            <label for="land200">200m²</label>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -911,7 +1037,7 @@
             modern: {
                 1: { 1: 180000, 2: 200000 },
                 1.5: { 1: 230000, 2: 250000 },
-                2: { 1: 280000, 2: 300000 }
+                2: { 1: 280000, 2: 300000, 3: 320000 }
             }
         };
 
@@ -932,13 +1058,14 @@
         };
 
         const rentalPremiums = {
-            bedrooms: { 1: 0, 2: 40 },
+            bedrooms: { 1: 0, 2: 40, 3: 80 },
             storeys: { 1: 0, 1.5: 20, 2: 60 }
         };
 
         const occupancyRates = {
             1: 0.8,
-            2: 0.7
+            2: 0.7,
+            3: 0.65
         };
 
         // Journey flow
@@ -1005,6 +1132,9 @@
             config.land = parseInt(document.querySelector('input[name="land"]:checked')?.value || 100);
             config.style = document.querySelector('input[name="style"]:checked')?.value || 'modern';
 
+            // Update bedroom options based on floors
+            updateBedroomOptions();
+
             // Update current selections display
             updateCurrentSelections();
 
@@ -1015,18 +1145,60 @@
             updateCalculations();
         }
 
+        function updateBedroomOptions() {
+            const floors = config.storeys;
+            const bed1 = document.querySelector('.radio-option:has(#bed1)');
+            const bed2 = document.querySelector('.radio-option:has(#bed2)');
+            const bed3 = document.querySelector('.radio-option:has(#bed3)');
+            
+            // Reset all options
+            bed1.classList.remove('disabled');
+            bed2.classList.remove('disabled'); 
+            bed3.classList.remove('disabled');
+            document.getElementById('bed1').disabled = false;
+            document.getElementById('bed2').disabled = false;
+            document.getElementById('bed3').disabled = false;
+
+            // Apply floor-based restrictions
+            if (floors === 1) {
+                // 1 floor: only 1 bedroom allowed
+                bed2.classList.add('disabled');
+                bed3.classList.add('disabled');
+                document.getElementById('bed2').disabled = true;
+                document.getElementById('bed3').disabled = true;
+                
+                // If currently selected bedroom is invalid, switch to 1
+                if (config.bedrooms > 1) {
+                    document.getElementById('bed1').checked = true;
+                    config.bedrooms = 1;
+                }
+            } else if (floors === 1.5) {
+                // 1.5 floors: 1 or 2 bedrooms allowed
+                bed3.classList.add('disabled');
+                document.getElementById('bed3').disabled = true;
+                
+                // If currently selected bedroom is invalid, switch to 2
+                if (config.bedrooms > 2) {
+                    document.getElementById('bed2').checked = true;
+                    config.bedrooms = 2;
+                }
+            }
+            // 2 floors: all bedrooms allowed (no restrictions needed)
+        }
+
         function updateCurrentSelections() {
             // Update style display
             const styleDisplay = config.style.charAt(0).toUpperCase() + config.style.slice(1);
             document.getElementById('currentStyle').textContent = styleDisplay;
 
             // Update storeys display
-            const storeyDisplay = config.storeys === 1 ? '1 storey' : 
-                                 config.storeys === 1.5 ? '1.5 storey' : '2 storey';
+            const storeyDisplay = config.storeys === 1 ? '1 floor' : 
+                                 config.storeys === 1.5 ? '1.5 floors' : '2 floors';
             document.getElementById('currentStoreys').textContent = storeyDisplay;
 
             // Update bedrooms display
-            const bedroomDisplay = config.bedrooms === 1 ? '1 bed' : '2 bed';
+            const bedroomDisplay = config.bedrooms === 1 ? '1 bed' : 
+                                  config.bedrooms === 2 ? '2 bed' : '3 bed';
             document.getElementById('currentBedrooms').textContent = bedroomDisplay;
         }
 
@@ -1242,6 +1414,32 @@
             });
         }
 
+        // View toggle functionality
+        function initializeViewToggle() {
+            const viewToggle = document.getElementById('viewToggle');
+            const body = document.body;
+            
+            // Check for saved view preference
+            const savedView = localStorage.getItem('configView');
+            if (savedView === 'summary') {
+                body.classList.add('summary-view');
+                viewToggle.classList.add('active');
+            }
+            
+            // View toggle click handler
+            viewToggle.addEventListener('click', () => {
+                body.classList.toggle('summary-view');
+                viewToggle.classList.toggle('active');
+                
+                // Save view preference
+                if (body.classList.contains('summary-view')) {
+                    localStorage.setItem('configView', 'summary');
+                } else {
+                    localStorage.setItem('configView', 'selectors');
+                }
+            });
+        }
+
         // Initialize on load
         document.addEventListener('DOMContentLoaded', () => {
             // Set default values
@@ -1252,6 +1450,9 @@
             
             // Initialize theme toggle
             initializeThemeToggle();
+            
+            // Initialize view toggle - temporarily disabled
+            // initializeViewToggle();
             
             // Start with journey steps (style and storey selection)
             document.getElementById('step1').classList.remove('hidden');
