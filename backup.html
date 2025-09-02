@@ -283,15 +283,6 @@
             z-index: 2;
         }
 
-        /* Image alignment fixes for balinese variants */
-        .villa-image[src*="balinese-1s"] {
-            transform: translate(-50%, -50%) translateX(1px);
-        }
-
-        .villa-image[src*="balinese-2s"] {
-            transform: translate(-50%, -50%) translateX(-1px);
-        }
-
         .image-placeholder {
             width: 100%;
             max-width: 600px;
@@ -834,7 +825,7 @@
                 filename += '-200m2';
             }
             
-            filename += '.webp';
+            filename += '.png';
             return filename;
         }
 
